@@ -8,6 +8,14 @@
 body {
     background-color: #99b6df;
 }
+
+/* added by georgebabatz */
+.form {
+    text-align: center;
+    margin-top: 50px;
+}
+/* end of add */
+
 .register {
     width: 400px;
     background-color: #ffffff;
@@ -27,6 +35,7 @@ body {
     justify-content: center;
     padding-top: 20px;
 }
+
 .register form label {
     display: flex;
     justify-content: center;

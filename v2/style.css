@@ -8,6 +8,15 @@
 body {
     background-color: #99b6df;
 }
+
+/* added by georbbtz */
+.failed_login {
+    text-align: center;
+    color: #e10000;
+    border-bottom: 1px solid #dee0e4;
+}
+/* end of addition */
+
 .login {
     width: 400px;
     background-color: #ffffff;
@@ -72,3 +81,5 @@ h2 {
     padding: 20px 0 20px 0;
     border-bottom: 1px solid #dee0e4;
 }
+
+

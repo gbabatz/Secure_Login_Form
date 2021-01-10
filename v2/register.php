@@ -24,6 +24,7 @@
                         VALUES ('$username', '" . md5($password) . "', '$email')";
             $result   = mysqli_query($con, $query);
             if ($result) {
+	//	$_SESSION['failed_login'] = 0;
                 echo "<div class='form'>
                     <h3>You are registered successfully.</h3><br/>
                     <p class='link'>Click here to <a href='login.php'>Login</a></p>
