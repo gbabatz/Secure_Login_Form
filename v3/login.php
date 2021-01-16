@@ -11,10 +11,6 @@
     <?php
         require('db_conn.php');
 	session_start();
-	$random_num = rand(1,10); //random case scenario for test question
-	$query_quest = "SELECT question,answer FROM questions WHERE id=$random_num";
-	$result_quest = mysqli_query($con, $query_quest);	
-	$que = mysqli_fetch_array($result_quest,MYSQLI_ASSOC);	
 	// When form submitted, check and create user session.
         if (isset($_POST["username"])) {
             $username = stripslashes($_POST['username']);    // removes backslashes	
@@ -31,8 +27,13 @@
                         AND password='" . md5($password) . "'";
             $result = mysqli_query($con, $query) or die(mysql_error());
 	    $rows = mysqli_num_rows($result);
-	    var_dump($rows);
-	    if (($rows == 1) && (strcmp($answer,$que["answer"])==0)){
+
+	    //var_dump(strcmp($answer,$que["answer"]));
+	    //var_dump($answer); 
+	    //var_dump($que['answer']);
+	    //var_dump($random_num);
+
+	    if (($rows >= 1) && (strcmp($answer,$_SESSION['correct_answer'])==0)){
 		$_SESSION["username"] = $username;
 		// Redirect to user dashboard page
 		header("Location: homepage.php");
@@ -41,7 +42,15 @@
 		$_SESSION['failed_login'] = 1;
                 header("Location: login.php");
             }
+ 
         } else {
+
+		$random_num = rand(1,10); //random case scenario for test question
+		$query_quest = "SELECT question,answer FROM questions WHERE id=$random_num";
+		$result_quest = mysqli_query($con, $query_quest);	
+		$que = mysqli_fetch_array($result_quest,MYSQLI_ASSOC);	
+		$_SESSION['correct_answer'] = $que['answer'];
+
     ?>
 		<h2>Secure login page - Ασφάλεια Συστημάτων Υπολογιστών</h2>
 		<div class="login">
