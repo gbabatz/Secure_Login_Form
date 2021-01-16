@@ -16,29 +16,27 @@
 	$result_quest = mysqli_query($con, $query_quest);	
 	$que = mysqli_fetch_array($result_quest,MYSQLI_ASSOC);	
 	// When form submitted, check and create user session.
-        if (isset($_POST["submit"])) {
+        if (isset($_POST["username"])) {
             $username = stripslashes($_POST['username']);    // removes backslashes	
             $username = mysqli_real_escape_string($con, $username);
+
             $password = stripslashes($_POST['password']);
             $password = mysqli_real_escape_string($con, $password);
+	    	
 	    $answer = stripslashes($_POST["answer"]);
 	    $answer = mysqli_real_escape_string($con, $answer);
+
 	    // Check user is exist in the database
             $query    = "SELECT * FROM `users` WHERE username='$username'
                         AND password='" . md5($password) . "'";
             $result = mysqli_query($con, $query) or die(mysql_error());
 	    $rows = mysqli_num_rows($result);
-	    if (isset($_POST['answer'])) {
-	        if ( strcmp($answer,$que["answer"])==0){
-	            if ($rows == 1) {
-                        $_SESSION["username"] = $username;
-		        // Redirect to user dashboard page
-		        header("Location: homepage.php");
-		    }else{
-		        $_SESSION['failed_login'] = 1;
-		        header("Location: login.php");
-		    }
-		}		
+	    var_dump($rows);
+	    if (($rows == 1) && (strcmp($answer,$que["answer"])==0)){
+		$_SESSION["username"] = $username;
+		// Redirect to user dashboard page
+		header("Location: homepage.php");
+
 	    } else {	     
 		$_SESSION['failed_login'] = 1;
                 header("Location: login.php");
