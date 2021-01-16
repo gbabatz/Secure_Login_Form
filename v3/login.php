@@ -33,9 +33,10 @@
 	    //var_dump($que['answer']);
 	    //var_dump($random_num);
 
-	    if (($rows >= 1) && (strcmp($answer,$_SESSION['correct_answer'])==0)){
+	    if (($rows >= 1) && (strcasecmp($answer,$_SESSION['correct_answer'])==0)){
 		$_SESSION["username"] = $username;
 		// Redirect to user dashboard page
+		unset($_SESSION['correct_answer']);
 		header("Location: homepage.php");
 
 	    } else {	     
