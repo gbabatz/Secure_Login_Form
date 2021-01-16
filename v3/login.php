@@ -9,10 +9,14 @@
     </head>
 	<body>
     <?php
+
         require('db_conn.php');
 	session_start();
+	if(isset($_SESSION['username'])){
+		header("Location: homepage.php");
+	}
 	// When form submitted, check and create user session.
-        if (isset($_POST["username"])) {
+        if (isset($_POST["submit"])) {
             $username = stripslashes($_POST['username']);    // removes backslashes	
             $username = mysqli_real_escape_string($con, $username);
 

@@ -2,6 +2,7 @@
     //include auth_session.php file on all user panel pages
 //    require('db.php');
     include("session_auth.php");
+	
 ?>
 <!DOCTYPE html>
 <html>
