@@ -9,22 +9,29 @@
 	<body>
     <?php
 	require('db_conn.php');
-        // When form submitted, insert values into the database.
+	// prevent sql injection
+	mysqli_set_charset('utf8md4');
+	// When form submitted, insert values into the database.
         if (isset($_REQUEST['username'])) {
-            // removes backslashes
-            $username = stripslashes($_REQUEST['username']);
+	    // removes backslashes
+	    $username = strip_tags($_POST['username']); // XSS Protection
+            $username = stripslashes($username);
             //escapes special characters in a string
             $username = mysqli_real_escape_string($con, $username);
-            $email    = stripslashes($_REQUEST['email']);
+            $email    = stripslashes($_POST['email']);
             $email    = mysqli_real_escape_string($con, $email);
-            $password = stripslashes($_REQUEST['password']);
+            $password = stripslashes($_POST['password']);
             $password = mysqli_real_escape_string($con, $password);
-            //construct query
+	    //with prepared statements
+	    $stmt = mysqli_prepare($con, "INSERT into users (username, password, email) VALUES ( ?, md5( ? ) , ? )");
+	    mysqli_stmt_bind_param($stmt,'sss', $username, $password, $email);
+
+	    $result = mysqli_stmt_execute($stmt);
+	    //construct query
             $query    = "INSERT into `users` (username, password, email)
                         VALUES ('$username', '" . md5($password) . "', '$email')";
-            $result   = mysqli_query($con, $query);
+            //$result   = mysqli_query($con, $query);
             if ($result) {
-	//	$_SESSION['failed_login'] = 0;
                 echo "<div class='form'>
                     <h3>You are registered successfully.</h3><br/>
                     <p class='link'>Click here to <a href='login.php'>Login</a></p>

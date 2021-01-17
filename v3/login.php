@@ -9,15 +9,15 @@
     </head>
 	<body>
     <?php
-
         require('db_conn.php');
 	session_start();
-	if(isset($_SESSION['username'])){
-		header("Location: homepage.php");
-	}
+	// prevent sql injection
+        mysqli_set_charset('utf8md4');	
 	// When form submitted, check and create user session.
-        if (isset($_POST["submit"])) {
-            $username = stripslashes($_POST['username']);    // removes backslashes	
+	if (isset($_POST["username"])) {
+	    // prevent sql injection with prepared statements
+	    $username = strip_tags($_POST['username']); // XSS Protection	
+	    $username = stripslashes($username);    // removes backslashes	
             $username = mysqli_real_escape_string($con, $username);
 
             $password = stripslashes($_POST['password']);
@@ -25,25 +25,23 @@
 	    	
 	    $answer = stripslashes($_POST["answer"]);
 	    $answer = mysqli_real_escape_string($con, $answer);
-
+	    
+	    $stmt = mysqli_prepare($con, "SELECT * FROM users WHERE username=? AND password=md5(?)");
+	    mysqli_stmt_bind_param($stmt,'ss', $username, $password);
+	    $result = mysqli_stmt_execute($stmt);
+	    mysqli_stmt_store_result($stmt);
 	    // Check user is exist in the database
-            $query    = "SELECT * FROM `users` WHERE username='$username'
-                        AND password='" . md5($password) . "'";
-            $result = mysqli_query($con, $query) or die(mysql_error());
-	    $rows = mysqli_num_rows($result);
-
-	    //var_dump(strcmp($answer,$que["answer"]));
-	    //var_dump($answer); 
-	    //var_dump($que['answer']);
-	    //var_dump($random_num);
+	    $rows = mysqli_stmt_num_rows($stmt);
 
 	    if (($rows >= 1) && (strcasecmp($answer,$_SESSION['correct_answer'])==0)){
 		$_SESSION["username"] = $username;
 		// Redirect to user dashboard page
+		mysqli_stmt_close($stmt);
 		unset($_SESSION['correct_answer']);
 		header("Location: homepage.php");
 
 	    } else {	     
+		mysqli_stmt_close($stmt);
 		$_SESSION['failed_login'] = 1;
                 header("Location: login.php");
             }
