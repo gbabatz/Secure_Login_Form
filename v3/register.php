@@ -11,7 +11,7 @@
 	require('db_conn.php');
 	session_start();
 	// prevent sql injection
-	mysqli_set_charset('utf8md4');
+	mysqli_set_charset($con, 'utf8md4');
 	// When form submitted, insert values into the database.
         if (isset($_REQUEST['username'])) {
 	    // removes backslashes
@@ -75,7 +75,10 @@
 				<label for="email">
 					<i class="fas fa-lock"></i>
 				</label>
-				<input type="password" name="password" placeholder="Password" id="password" minlength="8" required>
+				<div class='password-container'>
+				<input type="password" name="password" placeholder="Password" id="password-field" minlength="4" required>
+				<i id='pass-status' class='fa fa-eye' aria-hidden='true' onClick="viewPassword()"></i>
+				</div>
 				<input type="submit" value="Sign Up">
 			</form>
 			<?php 
@@ -103,5 +106,23 @@
     <?php
         }
     ?>
-	</body>
+	<script>
+	function viewPassword()
+	{
+	  var passwordInput = document.getElementById('password-field');
+	  var passStatus = document.getElementById('pass-status');
+	 
+	  if (passwordInput.type == 'password'){
+	    passwordInput.type='text';
+	    passStatus.className='fa fa-eye-slash';
+	    
+	  }
+	  else{
+	    passwordInput.type='password';
+	    passStatus.className='fa fa-eye';
+	  }
+	}
+	</script>
+
+</body>
 </html>

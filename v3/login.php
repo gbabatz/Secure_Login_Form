@@ -12,7 +12,7 @@
         require('db_conn.php');
 	session_start();
 	// prevent sql injection
-        mysqli_set_charset('utf8md4');	
+        mysqli_set_charset($con, 'utf8md4');	
 	// When form submitted, check and create user session.
 	if (isset($_POST["username"])) {
 	    // prevent sql injection with prepared statements
@@ -33,15 +33,14 @@
 	    // Check user is exist in the database
 	    $rows = mysqli_stmt_num_rows($stmt);
 
+	    mysqli_stmt_close($stmt);
 	    if (($rows >= 1) && (strcasecmp($answer,$_SESSION['correct_answer'])==0)){
 		$_SESSION["username"] = $username;
 		// Redirect to user dashboard page
-		mysqli_stmt_close($stmt);
 		unset($_SESSION['correct_answer']);
 		header("Location: homepage.php");
 
 	    } else {	     
-		mysqli_stmt_close($stmt);
 		$_SESSION['failed_login'] = 1;
                 header("Location: login.php");
             }
@@ -66,7 +65,10 @@
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
-				<input type="password" name="password" placeholder="Password" id="password" minlength="8" required>
+				<div class='password-container'>
+				<input type="password" name="password" placeholder="Password" id="password-field" minlength="4" required>
+				<i id='pass-status' class='fa fa-eye' aria-hidden='true' onClick="viewPassword()"></i>
+				</div>
 				<div class='row'>
 					 <?php echo "<h5>" . $que["question"] . "</h5>"; ?> 
 				</div>
@@ -74,15 +76,13 @@
 				<input type="submit" id="submit" name="submit" value="Login">
                         </form>
 	    <?php 
-		if(isset($_SESSION['failed_login'])){
-			if($_SESSION['failed_login'] == 1){
-				echo "<div class='failed_login'>"; 
-				echo "<h3> Wrong Credentials.</h3>";
-				echo "<h3> are you a hacker?</h3>";
-				echo "</div>";
+	if(isset($_SESSION['failed_login']) && $_SESSION['failed_login'] == 1){
+		echo "<div class='failed_login'>"; 
+		echo "<h3> Wrong Credentials.</h3>";
+		echo "<h3> are you a hacker?</h3>";
+		echo "</div>";
 
-				$_SESSION['failed_login'] = 0;
-			}
+		$_SESSION['failed_login'] = 0;
 	        }
             ?>
             <h4>New here? <a href="register.php">Sign Up!</a></h4>
@@ -90,5 +90,23 @@
     <?php
         }
     ?>
+
+	<script>
+	function viewPassword()
+	{
+	  var passwordInput = document.getElementById('password-field');
+	  var passStatus = document.getElementById('pass-status');
+	 
+	  if (passwordInput.type == 'password'){
+	    passwordInput.type='text';
+	    passStatus.className='fa fa-eye-slash';
+	    
+	  }
+	  else{
+	    passwordInput.type='password';
+	    passStatus.className='fa fa-eye';
+	  }
+	}
+	</script>
 	</body>
 </html>
