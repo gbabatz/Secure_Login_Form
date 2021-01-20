@@ -52,6 +52,17 @@ body {
     margin-bottom: 20px;
     padding: 0 15px;
 }
+
+.register form input[type="password"]:invalid, .register form input[type="text"]:invalid {
+    width: 310px;
+    height: 50px;
+    border: 1px solid #dee0e4;
+    margin-bottom: 20px;
+    padding: 0 15px;
+    color: red;
+    border: 2px dashed red;
+}
+
 .register form input[type="submit"] {
     width: 80%;
     padding: 15px;
@@ -68,4 +79,10 @@ body {
 .register form input[type="submit"]:hover {
   background-color: #2868c7;
     transition: background-color 0.2s;
+}
+
+.weak_password {
+    text-align: center;
+    color: #e10000;
+    border-bottom: 1px solid #dee0e4;
 }
