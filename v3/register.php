@@ -9,6 +9,7 @@
 	<body>
     <?php
 	require('db_conn.php');
+	session_start();
 	// prevent sql injection
 	mysqli_set_charset('utf8md4');
 	// When form submitted, insert values into the database.
@@ -30,6 +31,16 @@
 		$specialChars = preg_match('@[^\w]@', $password);
 		if(!$uppercase || !$lowercase || !$number || !$specialChars) {
 			$_SESSION["weak_password"] = 1;
+			if(!$uppercase){
+				$_SESSION["uppercase"] = 1;
+			}
+			if(!$lowercase){
+			        $_SESSION["lowercase"] = 1;
+			}
+			if(!$number){				             	                        $_SESSION["number"] = 1;
+	                }
+			if(!$specialChars){				                                	$_SESSION["special"] = 1;
+			}
 			header("Location: register.php");
 		}else{
 			//with prepared statements
@@ -43,7 +54,7 @@
 			//$result   = mysqli_query($con, $query);
 			if ($result) {
 				echo "<div class='form'>
-					<h3>You are registered successfully.</h3><br/>
+				        <h2>You are registered successfully.</h2><br/>
 					<p class='link'>Click here to <a href='login.php'>Login</a></p>
 					</div>";
 			}
@@ -72,9 +83,16 @@
 				if($_SESSION["weak_password"] == 1){
 					echo "<div class='weak_password'>"; 
 					echo "<h3> Weak Password!</h3>";
-					echo "<h3>- 8 characters long</h3>";
-					echo "<h3>- at least one upper case letter</h3>";
-					echo "<h3>- at least one number and special character</h3>";
+					if($_SESSION["lowercase"] == 1 || $_SESSION["uppercase"] == 1){
+						echo "<h3>- at least one uppercase and one lowercase letter</h3>";
+						$_SESSION["uppercase"] = 0;
+						$_SESSION["lowercase"] = 0;
+					}
+					if($_SESSION["number"] == 1 || $_SESSION["special"] == 1){
+						echo "<h3>- at least one number and special character</h3>";
+						$_SESSION["number"] = 0;
+						$_SESSION["special"] = 0;
+					}
 					echo "</div>";
 
 					$_SESSION['weak_password'] = 0;
