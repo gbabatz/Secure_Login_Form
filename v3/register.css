@@ -60,7 +60,6 @@ body {
     margin-bottom: 20px;
     padding: 0 15px;
     color: red;
-    border: 2px dashed red;
 }
 
 .register form input[type="submit"] {
@@ -81,7 +80,7 @@ body {
     transition: background-color 0.2s;
 }
 
-.weak_password {
+h3 {
     text-align: center;
     color: #e10000;
     border-bottom: 1px solid #dee0e4;

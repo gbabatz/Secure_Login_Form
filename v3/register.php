@@ -28,9 +28,8 @@
 		$lowercase = preg_match('@[a-z]@', $password);
 		$number    = preg_match('@[0-9]@', $password);
 		$specialChars = preg_match('@[^\w]@', $password);
-
-		if(!$uppercase || !$lowercase || !$number || !$specialChars || strlen($password) < 8) {
-			$_SESSION['weak_password'] = 1;
+		if(!$uppercase || !$lowercase || !$number || !$specialChars) {
+			$_SESSION["weak_password"] = 1;
 			header("Location: register.php");
 		}else{
 			//with prepared statements
@@ -69,8 +68,8 @@
 				<input type="submit" value="Sign Up">
 			</form>
 			<?php 
-			if(isset($_SESSION['weak_password'])){
-				if($_SESSION['weak_password'] == 1){
+			if(isset($_SESSION["weak_password"])){
+				if($_SESSION["weak_password"] == 1){
 					echo "<div class='weak_password'>"; 
 					echo "<h3> Weak Password!</h3>";
 					echo "<h3>- 8 characters long</h3>";
