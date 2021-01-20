@@ -62,11 +62,11 @@
 				<label for="username">
 					<i class="fas fa-user"></i>
 				</label>
-				<input type="text" name="username" placeholder="Username" id="username" required>
+				<input type="text" name="username" placeholder="Username" id="username" maxlength="20" required>
 				<label for="password">
 					<i class="fas fa-lock"></i>
 				</label>
-				<input type="password" name="password" placeholder="Password" id="password" required>
+				<input type="password" name="password" placeholder="Password" id="password" minlength="8" required>
 				<div class='row'>
 					 <?php echo "<h5>" . $que["question"] . "</h5>"; ?> 
 				</div>
