@@ -31,15 +31,24 @@
 		$specialChars = preg_match('@[^\w]@', $password);
 		if(!$uppercase || !$lowercase || !$number || !$specialChars) {
 			$_SESSION["weak_password"] = 1;
+			//if not defined it has warning depending on the situtation
+			//if isset is not used when showing the message below the form
+			$_SESSION["uppercase"] = 0;
+			$_SESSION["lowercase"] = 0;
+			$_SESSION["number"] = 0;
+			$_SESSION["special"] = 0;
+
 			if(!$uppercase){
 				$_SESSION["uppercase"] = 1;
 			}
 			if(!$lowercase){
 			        $_SESSION["lowercase"] = 1;
 			}
-			if(!$number){				             	                        $_SESSION["number"] = 1;
+			if(!$number){
+				$_SESSION["number"] = 1;
 	                }
-			if(!$specialChars){				                                	$_SESSION["special"] = 1;
+			if(!$specialChars){	
+				$_SESSION["special"] = 1;
 			}
 			header("Location: register.php");
 		}else{
@@ -49,8 +58,8 @@
 	
 			$result = mysqli_stmt_execute($stmt);
 			//construct query
-			$query    = "INSERT into `users` (username, password, email)
-						VALUES ('$username', '" . md5($password) . "', '$email')";
+			//$query    = "INSERT into `users` (username, password, email)
+			//			VALUES ('$username', '" . md5($password) . "', '$email')";
 			//$result   = mysqli_query($con, $query);
 			if ($result) {
 				echo "<div class='form'>

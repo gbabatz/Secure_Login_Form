@@ -11,8 +11,15 @@
     <?php
         require('db_conn.php');
 	session_start();
+
+	//redirect if you back from homepage without logout
+	if(isset($_SESSION['username'])){
+		header("Location: homepage.php");
+	}
+
 	// prevent sql injection
         mysqli_set_charset($con, 'utf8md4');	
+
 	// When form submitted, check and create user session.
 	if (isset($_POST["username"])) {
 	    // prevent sql injection with prepared statements
