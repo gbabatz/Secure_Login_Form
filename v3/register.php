@@ -26,7 +26,7 @@
                 
                  //check if email is valid
                  function checkemail($str) {
-                   return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a>)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
+                   return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
                  }
                  if(!checkemail($email)){
                    $_SESSION['invalid_email'] = 1; 
