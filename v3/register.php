@@ -23,6 +23,15 @@
 		$email    = mysqli_real_escape_string($con, $email);
 		$password = stripslashes($_POST['password']);
 		$password = mysqli_real_escape_string($con, $password);
+                
+                 //check if email is valid
+                 function checkemail($str) {
+                   return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a>)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
+                 }
+                 if(!checkemail($email)){
+                   $_SESSION['invalid_email'] = 1; 
+                   header("Location: register.php");
+                 }  
 
 		// Validate password strength
 		$uppercase = preg_match('@[A-Z]@', $password);
@@ -90,7 +99,8 @@
 				</div>
 				<input type="submit" value="Sign Up">
 			</form>
-			<?php 
+		
+                      	<?php 
 			if(isset($_SESSION["weak_password"])){
 				if($_SESSION["weak_password"] == 1){
 					echo "<div class='weak_password'>"; 
@@ -110,7 +120,20 @@
 					$_SESSION['weak_password'] = 0;
 				}
 				}
-				?>
+	                	?>
+
+                       <?php 
+                       if(isset($_SESSION['invalid_email'])){
+                         if($_SESSION['invalid_email']==1){
+                           echo "<div class='invalid_email'>";
+                           echo"<h3>Please give a valid email address.</h3>";
+                           echo "</div>";
+
+                           $_SESSION['invalid_email'] = 0;
+                         }
+                       }
+                       ?>
+
         </div>
     <?php
         }
