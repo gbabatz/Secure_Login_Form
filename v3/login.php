@@ -33,7 +33,7 @@
 	    $answer = stripslashes($_POST["answer"]);
 	    $answer = mysqli_real_escape_string($con, $answer);
 	    
-	    $stmt = mysqli_prepare($con, "SELECT * FROM users WHERE username=? AND password=md5(?)");
+	    $stmt = mysqli_prepare($con, "SELECT * FROM users WHERE username=? AND password=sha2(?,224)");
 	    mysqli_stmt_bind_param($stmt,'ss', $username, $password);
 	    $result = mysqli_stmt_execute($stmt);
 	    mysqli_stmt_store_result($stmt);

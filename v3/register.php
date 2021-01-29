@@ -24,11 +24,9 @@
 		$password = stripslashes($_POST['password']);
 		$password = mysqli_real_escape_string($con, $password);
                 
-                 //check if email is valid
-                 function checkemail($str) {
-                   return (!preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $str)) ? FALSE : TRUE;
-                 }
-                 if(!checkemail($email)){
+                //check if email is valid
+		$email_regexp = preg_match("/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix", $email);
+                 if(!$email_regexp){
                    $_SESSION['invalid_email'] = 1; 
                    header("Location: register.php");
                  }  
@@ -40,8 +38,8 @@
 		$specialChars = preg_match('@[^\w]@', $password);
 		if(!$uppercase || !$lowercase || !$number || !$specialChars) {
 			$_SESSION["weak_password"] = 1;
-			//if not defined it has warning depending on the situtation
-			//if isset is not used when showing the message below the form
+			
+			//initilize variables to avoid warnings
 			$_SESSION["uppercase"] = 0;
 			$_SESSION["lowercase"] = 0;
 			$_SESSION["number"] = 0;
@@ -62,14 +60,11 @@
 			header("Location: register.php");
 		}else{
 			//with prepared statements
-			$stmt = mysqli_prepare($con, "INSERT into users (username, password, email) VALUES ( ?, md5( ? ) , ? )");
+			$stmt = mysqli_prepare($con, "INSERT into users (username, password, email) VALUES ( ?, sha2( ? ,224) , ? )");
 			mysqli_stmt_bind_param($stmt,'sss', $username, $password, $email);
 	
 			$result = mysqli_stmt_execute($stmt);
-			//construct query
-			//$query    = "INSERT into `users` (username, password, email)
-			//			VALUES ('$username', '" . md5($password) . "', '$email')";
-			//$result   = mysqli_query($con, $query);
+
 			if ($result) {
 				echo "<div class='form'>
 				        <h2>You are registered successfully.</h2><br/>
