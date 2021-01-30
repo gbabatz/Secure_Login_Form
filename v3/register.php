@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 		<title>Register</title>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-        <link href="register.css" rel="stylesheet" type="text/css">
-    </head>
+    <link href="register.css" rel="stylesheet" type="text/css">
+  </head>
 	<body>
-    <?php
+  <?php
 
   // connection to database 
 	require('db_conn.php');
@@ -53,7 +53,8 @@
 			$_SESSION["special"] = !$specialChars;
 
 			header("Location: register.php");
-		}else{
+		}else{  
+      //user inputs are valid
 			// prepare statement
 			$stmt = mysqli_prepare($con, "INSERT into users (username, password, email) VALUES ( ?, sha2( ? ,224) , ? )");
 			mysqli_stmt_bind_param($stmt,'sss', $username, $password, $email);
@@ -69,66 +70,60 @@
 			}
 		}
   }else{
-    ?>
-		<div class="register">
-			<h1>Create New User</h1>
-			<form action="" method="POST">
-				<label for="username">
-					<i class="fas fa-user"></i>
-				</label>
-				<input type="text" name="username" placeholder="Username" id="username" maxlength="20" required>
-				<label for="password">
-					<i class="fas fa-archive"></i>
-                </label>
-                <input type="text" name="email" placeholder="Email" id="email" required>
-				<label for="email">
-					<i class="fas fa-lock"></i>
-				</label>
-				<div class='password-container'>
-				<input type="password" name="password" placeholder="Password" id="password-field" minlength="4" required>
-				<i id='pass-status' class='fa fa-eye' aria-hidden='true' onClick="viewPassword()"></i>
-				</div>
-				<input type="submit" value="Sign Up">
-			</form>
+  ?>
+  <div class="register">
+    <h1>Create New User</h1>
+    <form action="" method="POST">
+      <label for="username">
+        <i class="fas fa-user"></i>
+      </label>
+      <input type="text" name="username" placeholder="Username" id="username" maxlength="20" required>
+      <label for="password">
+        <i class="fas fa-archive"></i>
+      </label>
+      <input type="text" name="email" placeholder="Email" id="email" required>
+      <label for="email">
+        <i class="fas fa-lock"></i>
+      </label>
+      <div class='password-container'>
+      <input type="password" name="password" placeholder="Password" id="password-field" minlength="4" required>
+      <i id='pass-status' class='fa fa-eye' aria-hidden='true' onClick="viewPassword()"></i>
+      </div>
+      <input type="submit" value="Sign Up">
+    </form>
 		
-                      	<?php 
-			if(isset($_SESSION["weak_password"])){
-				if($_SESSION["weak_password"] == 1){
-					echo "<div class='weak_password'>"; 
-					echo "<h3> Weak Password!</h3>";
-					if($_SESSION["lowercase"] == 1 || $_SESSION["uppercase"] == 1){
-						echo "<h3>- at least one uppercase and one lowercase letter</h3>";
-						$_SESSION["uppercase"] = 0;
-						$_SESSION["lowercase"] = 0;
-					}
-					if($_SESSION["number"] == 1 || $_SESSION["special"] == 1){
-						echo "<h3>- at least one number and special character</h3>";
-						$_SESSION["number"] = 0;
-						$_SESSION["special"] = 0;
-					}
-					echo "</div>";
+  <?php 
+  if(isset($_SESSION["weak_password"]) && $_SESSION["weak_password"] == 1){
+	  echo "<div class='weak_password'>"; 
+		echo "<h3> Weak Password!</h3>";
+		  if($_SESSION["lowercase"] == 1 || $_SESSION["uppercase"] == 1){
+			  echo "<h3>- at least one uppercase and one lowercase letter</h3>";
+				$_SESSION["uppercase"] = 0;
+				$_SESSION["lowercase"] = 0;
+			}
+			if($_SESSION["number"] == 1 || $_SESSION["special"] == 1){
+				echo "<h3>- at least one number and special character</h3>";
+				$_SESSION["number"] = 0;
+				$_SESSION["special"] = 0;
+			}
+			  echo "</div>";
+			  $_SESSION['weak_password'] = 0;
+	}
 
-					$_SESSION['weak_password'] = 0;
-				}
-				}
-	                	?>
+  if(isset($_SESSION['invalid_email']) && $_SESSION['invalid_email'] == 1){
+    echo "<div class='invalid_email'>";
+    echo "<h3>Please give a valid email address.</h3>";
+    echo "</div>";
+    $_SESSION['invalid_email'] = 0;
+  }
+  ?>
 
-                       <?php 
-                       if(isset($_SESSION['invalid_email'])){
-                         if($_SESSION['invalid_email']==1){
-                           echo "<div class='invalid_email'>";
-                           echo"<h3>Please give a valid email address.</h3>";
-                           echo "</div>";
+  </div>
 
-                           $_SESSION['invalid_email'] = 0;
-                         }
-                       }
-                       ?>
-
-        </div>
   <?php
   }
   ?>
+
 	<script>
 	function viewPassword()
 	{
