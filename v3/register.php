@@ -89,7 +89,7 @@
           <i class="fas fa-lock"></i>
         </label>
         <div class='password-container'>
-        <input type="password" name="password" placeholder="Password" id="password-field" minlength="4" required>
+        <input type="password" name="password" placeholder="Password" id="password-field" minlength="8" required>
         <i id='pass-status' class='fa fa-eye' aria-hidden='true' onClick="viewPassword()"></i>
         </div>
         <input type="submit" value="Sign Up">
