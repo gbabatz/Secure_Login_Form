@@ -18,7 +18,7 @@
         header("Location: homepage.php");
       }
 
-	    // prevent sql injection
+      // prevent sql injection
       mysqli_set_charset($con, 'utf8md4');	
 
       // When form submitted, check and create user session.
