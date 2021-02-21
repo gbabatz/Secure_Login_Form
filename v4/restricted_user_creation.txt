@@ -1,0 +1,3 @@
+create user 'restricted_user' identified by '1234';
+grant select , insert on Login_Form.* to restricted_user;
+

@@ -1,0 +1,22 @@
+create table questions(id int(11) not null auto_increment, question varchar(255) not null, answer varchar(255) not null, primary key (id));
+
+insert into questions (question,answer) values ('What is the color of the sky?','blue');
+
+insert into questions (question,answer) values ('How many legs does a human has?(number)','2');
+
+insert into questions (question,answer) values ('How many fingers does one human hand has?(number)','5');
+
+insert into questions (question,answer) values ('How many corners does a square have?(number)','4');
+
+insert into questions (question,answer) values ('How many corners does a triangle have?(number)','3');
+
+insert into questions (question,answer) values ('What is the color of red roses?','red');
+
+insert into questions (question,answer) values ('What is the color of yellow roses?','yellow');
+
+insert into questions (question,answer) values ('Write APPLE without the letter P ','ALE');
+
+insert into questions (question,answer) values ('Write ORANGE without the letter G ','ORANE');
+
+insert into questions (question,answer) values ('Write BANANA without the letter A ','BNN');
+
