@@ -1,3 +1,4 @@
+
 create table questions(id int(11) not null auto_increment, question varchar(255) not null, answer varchar(255) not null, primary key (id));
 
 insert into questions (question,answer) values ('What is the color of the sky?','blue');
@@ -19,4 +20,17 @@ insert into questions (question,answer) values ('Write APPLE without the letter 
 insert into questions (question,answer) values ('Write ORANGE without the letter G ','ORANE');
 
 insert into questions (question,answer) values ('Write BANANA without the letter A ','BNN');
+
+ users_upgraded | CREATE TABLE `users_upgraded` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  `last_ip` varchar(45) DEFAULT NULL,
+  `logged_now` tinyint(1) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 |
+
+create user 'restricted_user' identified by '1234';
+grant select, insert,update on Login_Form.* to restricted_user;
 

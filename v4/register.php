@@ -66,7 +66,8 @@
         if(mysqli_stmt_num_rows($stmt)>=1){
           $_SESSION['user_exists'] = 1;
           header("Location: register.php");	
-       }else{
+        }else{
+          // here we can add the user to the database
           // prepare statement
           $stmt = mysqli_prepare($con, "INSERT into users_upgraded (username, password, email) VALUES ( ?, sha2( ? ,224) , ? )");
         mysqli_stmt_bind_param($stmt,'sss', $username, $password, $email);

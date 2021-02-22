@@ -4,30 +4,28 @@
 		<meta charset="utf-8">
 		<title>Login</title>
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-	  <link href="style.css" rel="stylesheet" type="text/css">
+	  <link href="login.css" rel="stylesheet" type="text/css">
 	  <link rel="icon" href="data:;base64,=">
   </head>
 	<body>
     <?php
       require('db_conn.php');
-	    session_start();
+      session_start();
 
       //update the table fields
       function log_in($con,$mail){
-        //get users ip 
+        // get users ip 
         //$ip = isset($_SERVER['HTTP_CLIENT_IP']) ? $_SERVER['HTTP_CLIENT_IP'] : isset($_SERVER['HTTP_X_FORWARDER_FOR']) ? $_SERVER['HTTP_X_FORWARDER_FOR'] : $_SERVER['REMOTE_ADDR'];
         //or simply
         $ip = $_SERVER['REMOTE_ADDR'];
         //this is not user input so no need to sanitize
         $update_q = "update users_upgraded set last_ip='$ip', logged_now=1 where email='$mail'";
-        if($res = mysqli_query($con,$update_q)){
+        if(mysqli_query($con,$update_q)){
           header("Location: homepage.php");
         }else{
           $_SESSION['update_error'] = 1;
-          var_dump($update_q);
-          //header("Location: login.php");
+          header("Location: login.php");
         }
-          
       }
 
       // redirect if you back from homepage without logout
@@ -35,7 +33,7 @@
         header("Location: homepage.php");
       }
 
-	    // prevent sql injection
+		// prevent sql injection
       mysqli_set_charset($con, 'utf8md4');	
 
       // When form submitted, check and create user session.
@@ -60,16 +58,13 @@
         $rows = mysqli_stmt_num_rows($stmt);
 
         mysqli_stmt_close($stmt);
-        if (($rows >= 1) && (strcasecmp($answer,$_SESSION['correct_answer'])==0)){
-          
+        if (($rows == 1) && (strcasecmp($answer,$_SESSION['correct_answer'])==0)){
           $_SESSION["email"] = $email;
           log_in($con,$email); 
-
         }else{	     
           $_SESSION['failed_login'] = 1;
           header("Location: login.php");
         }
-     
       }else{
 
         $random_num = rand(1,10); //random case scenario for test question
@@ -103,7 +98,7 @@
 
 	    <?php 
         if(isset($_SESSION['failed_login']) && $_SESSION['failed_login'] == 1){
-          echo "<div class='failed_login'>"; 
+          echo "<div class='red_message'>"; 
           echo "<h3> Wrong Credentials.</h3>";
           echo "<h3> are you a hacker?</h3>";
           echo "</div>";
@@ -111,7 +106,7 @@
           $_SESSION['failed_login'] = 0;
         }
         if(isset($_SESSION['update_error']) && $_SESSION['update_error'] == 1){
-          echo "<div class='update_error'>"; 
+          echo "<div class='red_message'>"; 
           echo "<h3>An error occured</h3>";
           echo "</div>";
 
